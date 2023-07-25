@@ -4,10 +4,13 @@ import xlsx from "xlsx";
 
 const uploadExcel = async (req: Request, res: Response) => {
   if (!req.file) {
+    console.log("No Upload File");
     return res.status(400).json({ error: "No file uploaded" });
   }
 
   try {
+    console.log("Start Upload File");
+    console.log("File Name: ", req.file.filename);
     const filePath = path.join(__dirname, "../../", req.file.path);
     const workbook = xlsx.readFile(filePath);
 
@@ -16,6 +19,7 @@ const uploadExcel = async (req: Request, res: Response) => {
 
     const data = xlsx.utils.sheet_to_json(worksheet);
 
+    console.log("Done Upload");
     res.status(200).json({ data });
   } catch (error) {
     console.error("Error reading Excel file:", error);
